@@ -1113,6 +1113,9 @@ local function main()
 					if node.Obj.PrimaryPart then
 						hrp.CFrame = node.Obj.PrimaryPart.CFrame + Settings.Explorer.TeleportToOffset
 						break
+					elseif node.Obj.WorldPivot then
+						hrp.CFrame = CFrame.new(node.Obj.WorldPivot.Position) + Settings.Explorer.TeleportToOffset
+						break
 					else
 						local part = node.Obj:FindFirstChildWhichIsA("BasePart",true)
 						if part and nodes[part] then
