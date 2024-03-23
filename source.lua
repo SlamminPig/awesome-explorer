@@ -879,6 +879,7 @@ local function main()
 		context:QueueDivider()
 
 		if presentClasses["BasePart"] or presentClasses["Model"] then
+			context:AddRegistered("TOUCH_PART")
 			context:AddRegistered("TELEPORT_TO")
 			context:AddRegistered("VIEW_OBJECT")
 		end
@@ -1095,7 +1096,41 @@ local function main()
 				Explorer.Refresh()
 			end
 		end})
+		
+		function touch(part)
+			if plr.Character and plr.Character:FindFirstChild('HumanoidRootPart') and firetouchinterest then
+				firetouchinterest(plr.Character.HumanoidRootPart, part, 0)
+				firetouchinterest(plr.Character.HumanoidRootPart, part, 1)
+			end
+		end
 
+		context:Register("TOUCH_PART",{Name = "Touch", IconMap = Explorer.MiscIcons, Icon = "TouchPart", OnClick = function()
+			local sList = selection.List
+			local isa = game.IsA
+
+			local hrp = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+			if not hrp then return end
+
+			for i = 1,#sList do
+				local node = sList[i]
+
+				if isa(node.Obj,"BasePart") then
+					touch(node.Obj)
+					break
+				elseif isa(node.Obj,"Model") then
+					if node.Obj.PrimaryPart then
+						touch(node.Obj.PrimaryPart)
+						break
+					else
+						local part = node.Obj:FindFirstChildWhichIsA("BasePart",true)
+						if part and nodes[part] then
+							touch(nodes[part].Obj)
+						end
+					end
+				end
+			end
+		end})
+		
 		context:Register("TELEPORT_TO",{Name = "Teleport To", IconMap = Explorer.MiscIcons, Icon = "TeleportTo", OnClick = function()
 			local sList = selection.List
 			local isa = game.IsA
@@ -10983,7 +11018,7 @@ Main = (function()
 		-- Init icons
 		Main.MiscIcons = Lib.IconMap.new(Main.GetLocalAsset("6511490623"),256,256,16,16)
 		Main.MiscIcons:SetDict({
-			Reference = 0,             Cut = 1,                         Cut_Disabled = 2,      Copy = 3,               Copy_Disabled = 4,    Paste = 5,                Paste_Disabled = 6,
+			Reference = 0,             Cut = 1,                         Cut_Disabled = 2,      Copy = 3,               Copy_Disabled = 4,    Paste = 5,                Paste_Disabled = 6,	TouchPart = 27,
 			Delete = 7,                Delete_Disabled = 8,             Group = 9,             Group_Disabled = 10,    Ungroup = 11,         Ungroup_Disabled = 12,    TeleportTo = 13,
 			Rename = 14,               JumpToParent = 15,               ExploreData = 16,      Save = 17,              CallFunction = 18,    CallRemote = 19,          Undo = 20,
 			Undo_Disabled = 21,        Redo = 22,                       Redo_Disabled = 23,    Expand_Over = 24,       Expand = 25,          Collapse_Over = 26,       Collapse = 27,
