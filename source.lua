@@ -883,7 +883,11 @@ local function main()
 			context:AddRegistered("TELEPORT_TO")
 			context:AddRegistered("VIEW_OBJECT")
 		end
-
+		
+		if presentClasses["ClickDetector"] then
+			context:AddRegistered("Fire_Clickdetector")
+		end
+		
 		if presentClasses["Player"] then
 			context:AddRegistered("SELECT_CHARACTER")
 		end
@@ -1127,6 +1131,23 @@ local function main()
 							touch(nodes[part].Obj)
 						end
 					end
+				end
+			end
+		end})
+		
+		context:Register("Fire_Clickdetector",{Name = "FireClickDetector", IconMap = Explorer.MiscIcons, Icon = "TouchPart", OnClick = function()
+			local sList = selection.List
+			local isa = game.IsA
+
+			local hrp = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+			if not hrp then return end
+
+			for i = 1,#sList do
+				local node = sList[i]
+
+				if isa(node.Obj,"ClickDetector") then
+					fireclickdetector(node.Obj)
+					break
 				end
 			end
 		end})
