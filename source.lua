@@ -2686,7 +2686,7 @@ local function main()
 		local RMDCustomOrders = RMD.PropertyOrders
 		local getAttributes = game.GetAttributes
 		local maxAttrs = Settings.Properties.MaxAttributes
-		local showingAttrs = Settings.Properties.ShowAttributes
+		local showingAttrs = true
 		local foundAttrs = {}
 		local attrCount = 0
 		local typeof = typeof
@@ -3739,7 +3739,7 @@ local function main()
 
 						local showingAttrs = Settings.Properties.ShowAttributes
 						toggleAttributes.Position = UDim2.new(1,-85-leftOffset,0,0)
-						toggleAttributes.Text = (showingAttrs and "[Setting: ON]" or "[Setting: OFF]")
+						toggleAttributes.Text = "[Setting: ON]"
 						toggleAttributes.TextColor3 = Settings.Theme.Text
 						toggleAttributes.Visible = (prop.CategoryName == "Attributes")
 					else
