@@ -1281,9 +1281,24 @@ local function main()
 		context:Register("GET_REFERENCES",{Name = "Get Lua References", IconMap = Explorer.ClassIcons, Icon = 34, OnClick = function()
 
 		end})
+		
+		local Params = {
+		 RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
+		 SSI = "saveinstance",
+		}
+		local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()
 
 		context:Register("SAVE_INST",{Name = "Save to File", IconMap = Explorer.MiscIcons, Icon = "Save", OnClick = function()
-
+			local sList = selection.List
+			for i = 1,#sList do
+				local node = sList[i]
+				local Options = {
+					mode = 'full';
+					Object = node.Obj;
+					IsModel = true;
+				}
+				synsaveinstance(Options)
+			end
 		end})
 
 		context:Register("VIEW_CONNECTIONS",{Name = "View Connections", OnClick = function()
@@ -10307,7 +10322,6 @@ Main = (function()
 			if not func then Main.MissingEnv[#Main.MissingEnv+1] = name return end
 			rawset(self,name,func)
 		end})
-		print(1)
 		-- file
 		env.readfile = readfile
 		env.isfile = isfile
