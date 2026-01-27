@@ -900,6 +900,10 @@ local function main()
 			context:AddRegistered("Fire_Clickdetector")
 		end
 		
+		if presentClasses["ProximityPrompt"] then
+			context:AddRegistered("Fire_ProximityPrompt")
+		end
+		
 		if presentClasses["Player"] then
 			context:AddRegistered("SELECT_CHARACTER")
 		end
@@ -1147,7 +1151,7 @@ local function main()
 			end
 		end})
 		
-		context:Register("Fire_Clickdetector",{Name = "FireClickDetector", IconMap = Explorer.MiscIcons, Icon = "TouchPart", OnClick = function()
+		context:Register("Fire_Clickdetector",{Name = "Fire ClickDetector", IconMap = Explorer.MiscIcons, Icon = "TouchPart", OnClick = function()
 			local sList = selection.List
 			local isa = game.IsA
 
@@ -1159,6 +1163,20 @@ local function main()
 
 				if isa(node.Obj,"ClickDetector") then
 					fireclickdetector(node.Obj)
+					break
+				end
+			end
+		end})
+		
+		context:Register("Fire_ProximityPrompt",{Name = "Fire ProximityPrompt", IconMap = Explorer.MiscIcons, Icon = "TouchPart", OnClick = function()
+			local sList = selection.List
+			local isa = game.IsA
+
+			for i = 1,#sList do
+				local node = sList[i]
+
+				if isa(node.Obj,"ProximityPrompt") then
+					fireproximityprompt(node.Obj)
 					break
 				end
 			end
